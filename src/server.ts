@@ -18,6 +18,12 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 let lastTrackId: string | null = null;
 
+const VALID_ACTIONS = ["play", "pause", "next", "prev"] as const;
+type SpotifyAction = (typeof VALID_ACTIONS)[number];
+const isSpotifyAction = (action: string): action is SpotifyAction => {
+  return (VALID_ACTIONS as readonly string[]).includes(action);
+};
+
 // --- Discord ---
 
 setInterval(async () => {
@@ -76,8 +82,7 @@ app.post("/api/control/:action", async (req, res) => {
     return res.status(403).json({ error: "Unauthorized" });
   }
 
-  if (["play", "pause", "next", "prev"].includes(action)) {
-    // @ts-ignore
+  if (isSpotifyAction(action)) {
     await controlSpotify(action);
     res.json({ success: true });
   } else {
