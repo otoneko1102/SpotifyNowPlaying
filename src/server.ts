@@ -18,6 +18,8 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 let lastTrackId: string | null = null;
 
+// --- Discord ---
+
 setInterval(async () => {
   if (!DISCORD_WEBHOOK_URL) return;
 
@@ -49,6 +51,8 @@ setInterval(async () => {
     }
   }
 }, 10000);
+
+// --- API ---
 
 app.get("/api/nowplaying", async (req, res) => {
   const data = await getNowPlaying();
