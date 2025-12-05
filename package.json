@@ -7,7 +7,7 @@
     "start": "node dist/server.js",
     "dev": "nodemon",
     "build:frontend": "cd frontend && npm run build",
-    "build": "tsc && npm run build:frontend",
+    "build": "tsc && cd frontend && npm install && npm run build",
     "format:frontend": "cd frontend && npm run format",
     "format": "prettier --write src/ && npm run format:frontend"
   },

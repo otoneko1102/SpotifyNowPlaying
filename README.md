@@ -1,6 +1,6 @@
 # Spotify Now Playing
 
-**English** | [日本語](./README-ja.md)
+**English** | **[日本語](./README-ja.md)** | **[English for Vercel](./README-for-vercel.md)** | **[Vercel用日本語](./README-for-vercel-ja.md)**
 
 A web application that displays your current Spotify track with a beautiful UI. It includes a PWA-enabled Admin panel for playback control, Discord notifications, and Twitter sharing integration.
 

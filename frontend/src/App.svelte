@@ -18,7 +18,13 @@
     progressMs?: number;
   }
 
+  interface User {
+    name: string;
+    url: string;
+  }
+
   let track: Track | null = null;
+  let user: User | null = null;
   let pollInterval: any;
   let isAdmin = false;
   let showModal = false;
@@ -36,6 +42,45 @@
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const fetchUser = async () => {
+    try {
+      const res = await fetch("/api/me");
+      if (res.ok) {
+        user = await res.json();
+        updateMeta();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const updateMeta = () => {
+    if (!user) return;
+
+    const titleText = `${user.name}'s Spotify#NowPlaying`;
+    document.title = titleText;
+
+    setMetaTag("description", `${user.name} is playing Spotify.`);
+    setMetaTag("og:title", titleText);
+    setMetaTag("og:description", `${user.name} is playing Spotify.`);
+  };
+
+  const setMetaTag = (name: string, content: string) => {
+    let meta =
+      document.querySelector(`meta[name="${name}"]`) ||
+      document.querySelector(`meta[property="${name}"]`);
+    if (!meta) {
+      meta = document.createElement("meta");
+      if (name.startsWith("og:")) {
+        meta.setAttribute("property", name);
+      } else {
+        meta.setAttribute("name", name);
+      }
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", content);
   };
 
   const verifyPassword = async (pwd: string) => {
@@ -109,6 +154,7 @@
         }
       }
 
+      await fetchUser();
       fetchTrack();
     })();
 
@@ -153,6 +199,13 @@
     <div class="overlay"></div>
 
     <div class="container">
+      {#if user}
+        <div class="user-profile">
+          <a href={user.url} target="_blank" rel="noreferrer">
+            {user.name}'s Spotify#NowPlaying
+          </a>
+        </div>
+      {/if}
       <div class="art-area">
         <img src={track.albumArt} alt="Art" class="art" />
       </div>
@@ -266,6 +319,28 @@
     flex-direction: column;
     padding: 24px;
     box-sizing: border-box;
+  }
+  .user-profile {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 20;
+  }
+  .user-profile a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    transition: color 0.2s;
+  }
+  .user-profile a:hover {
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
   }
   .art-area {
     flex: 1;

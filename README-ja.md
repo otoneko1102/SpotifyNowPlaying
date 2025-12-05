@@ -1,6 +1,6 @@
 # Spotify Now Playing
 
-[English](./README.md) | **日本語**
+**[English](./README.md)** | **日本語** | **[English for Vercel](./README-for-vercel.md)** | **[Vercel用日本語](./README-for-vercel-ja.md)**
 
 現在再生中のSpotifyトラックを美しいUIで表示するWebアプリケーションです。再生コントロール、Discord通知、Twitter共有機能を備えたPWA対応の管理画面が含まれています。
 

@@ -27,7 +27,7 @@ const main = async () => {
     response_type: "code",
     redirect_uri: REDIRECT_URI,
     scope:
-      "user-read-currently-playing user-read-playback-state user-modify-playback-state",
+      "user-read-currently-playing user-read-playback-state user-modify-playback-state user-read-private",
   });
 
   // Using standard Spotify Auth endpoint
