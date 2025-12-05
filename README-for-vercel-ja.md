@@ -54,8 +54,8 @@ Spotifyリフレッシュトークンを生成するため、プロジェクト�
    http://127.0.0.1:3000/callback
    ```
 
-   > [!NOTE]
-   > これはローカルのトークン生成スクリプトで必要です。
+> [!NOTE]
+> これはローカルのトークン生成スクリプトで必要です。
 
 ---
 
@@ -108,8 +108,8 @@ Spotifyリフレッシュトークンを生成するため、プロジェクト�
    | SPOTIFY_REFRESH_TOKEN | (あなたのトークン) | ステップ3で生成したトークン。 |
    | ADMIN_PASSWORD | (あなたのパスワード) | /adminページにアクセスするパスワード。 |
 
-   > [!CAUTION]
-   > DISCORD_WEBHOOK_URLは追加しないでください。Vercelではサポートされていません。
+> [!CAUTION]
+> DISCORD_WEBHOOK_URLは追加しないでください。Vercelではサポートされていません。
 
 6. **Deploy** をクリック。
 
