@@ -63,7 +63,8 @@ A web application that displays your current Spotify track with a beautiful UI. 
    ```
    http://127.0.0.1:3000/callback
    ```
-   > Note: This local address is used for the initial token generation script.
+   > [!NOTE]
+   > This local address is used for the initial token generation script.
 
 ### 2. Environment Variables
 

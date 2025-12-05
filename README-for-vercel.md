@@ -48,7 +48,8 @@ You need to run the project locally **once** to generate the Spotify Refresh Tok
 4. In the App settings, add the following Redirect URI:
    http://127.0.0.1:3000/callback
 
-   > Note: This is required for the local token generation script.
+   > [!NOTE]
+   > This is required for the local token generation script.
 
 ---
 
@@ -97,7 +98,8 @@ Run the setup script on your **local machine**:
    SPOTIFY_REFRESH_TOKEN  | (Your Token)         | The token you generated in Step 3.
    ADMIN_PASSWORD         | (Your Password)      | Password to access the /admin page.
 
-   > **Note:** Do not add DISCORD_WEBHOOK_URL as it is not supported on Vercel.
+   > [!CAUTION]
+   > Do not add DISCORD_WEBHOOK_URL as it is not supported on Vercel.
 
 6. Click **Deploy**.
 
