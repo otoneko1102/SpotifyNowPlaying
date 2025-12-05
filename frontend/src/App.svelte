@@ -30,12 +30,17 @@
   let showModal = false;
   let passwordInput = "";
 
-  let isUpdating = false;
+  let isProcessing = false;
+  let lastActionTime = 0;
 
   const isAdminRoute = currentPath === "/admin";
 
   const fetchTrack = async () => {
     try {
+      if (Date.now() - lastActionTime < 2000) {
+        return;
+      }
+
       const res = await fetch("/api/nowplaying");
       const data = await res.json();
       track = data;
@@ -109,10 +114,13 @@
   };
 
   const control = async (action: "play" | "pause" | "next" | "prev") => {
+    if (isProcessing) return;
+
     const pwd = localStorage.getItem("admin_pass");
     if (!pwd) return;
 
-    isUpdating = true;
+    isProcessing = true;
+    lastActionTime = Date.now();
 
     if (track) {
       if (action === "pause") track.isPlaying = false;
@@ -120,19 +128,14 @@
       track = track;
     }
 
-    await fetch(`/api/control/${action}`, {
-      method: "POST",
-      headers: { "x-admin-pass": pwd },
-    });
-
-    setTimeout(async () => {
-      await fetchTrack();
-    }, 500);
-
-    setTimeout(async () => {
-      await fetchTrack();
-      isUpdating = false;
-    }, 2000);
+    try {
+      await fetch(`/api/control/${action}`, {
+        method: "POST",
+        headers: { "x-admin-pass": pwd },
+      });
+    } finally {
+      isProcessing = false;
+    }
   };
 
   onMount(() => {
@@ -159,9 +162,7 @@
     })();
 
     pollInterval = setInterval(() => {
-      if (!isUpdating) {
-        fetchTrack();
-      }
+      fetchTrack();
     }, 3000);
 
     return () => clearInterval(pollInterval);
@@ -222,23 +223,35 @@
 
         {#if isAdmin}
           <div class="btns">
-            <!-- svelte-ignore a11y_consider_explicit_label -->
-            <button class="btn" on:click={() => control("prev")}>
+            <button
+              class="btn"
+              on:click={() => control("prev")}
+              disabled={isProcessing}
+            >
               <img src="/prev.svg" alt="Previous" class="icon" />
             </button>
             {#if track.isPlaying}
-              <!-- svelte-ignore a11y_consider_explicit_label -->
-              <button class="btn main-btn" on:click={() => control("pause")}>
+              <button
+                class="btn main-btn"
+                on:click={() => control("pause")}
+                disabled={isProcessing}
+              >
                 <img src="/pause.svg" alt="Pause" class="icon-main" />
               </button>
             {:else}
-              <!-- svelte-ignore a11y_consider_explicit_label -->
-              <button class="btn main-btn" on:click={() => control("play")}>
+              <button
+                class="btn main-btn"
+                on:click={() => control("play")}
+                disabled={isProcessing}
+              >
                 <img src="/play.svg" alt="Play" class="icon-main" />
               </button>
             {/if}
-            <!-- svelte-ignore a11y_consider_explicit_label -->
-            <button class="btn" on:click={() => control("next")}>
+            <button
+              class="btn"
+              on:click={() => control("next")}
+              disabled={isProcessing}
+            >
               <img src="/next.svg" alt="Next" class="icon" />
             </button>
           </div>
@@ -413,6 +426,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.2s;
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
   .icon {
     width: 32px;
@@ -461,7 +479,6 @@
     color: rgba(255, 255, 255, 0.5);
   }
 
-  /* Modal Styles */
   .modal-overlay {
     position: fixed;
     top: 0;
