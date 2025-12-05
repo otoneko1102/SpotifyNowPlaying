@@ -4,7 +4,7 @@
 
 This is the Vercel-compatible version of the **Spotify Now Playing** web application. It runs on Vercel's Serverless Functions (Hobby Plan compatible), allowing you to host it for free.
 
-> ![WARNING]
+> [!WARNING]
 > Due to the serverless nature of Vercel, the **Discord Notification feature (background polling) is disabled** and will not work. Only the Web UI and Admin Controller are available.
 
 ## Table of Contents
